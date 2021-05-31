@@ -6,36 +6,21 @@ if ($http_origin == "https://www.weblocks.com" || $http_origin == "https://weblo
     header("Access-Control-Allow-Origin: $http_origin");
 }
 
-function fwrite_stream($fp, $string) {
-    for ($written = 0; $written < strlen($string); $written += $fwrite) {
-        $fwrite = fwrite($fp, substr($string, $written));
-        if ($fwrite === false) {
-            return $written;
-        }
-    }
-    return $written;
-}
-
-
 $code = $_POST['code'];
 $xml = $_POST['xml'];
-
 $id = $_POST['id'];
 $userID = $_POST['userID'];
-$url = $_POST['url'];
 
 
-$script = 'script-'.$userID.'-'.$id.'.js';
-$xml_file =  'xml-'.$userID.'-'.$id.'.xml';
+$code_url = 'script-'.$userID.'-'.$id.'.js';
+$xml_url =  'xml-'.$userID.'-'.$id.'.xml';
 
-$myfile = fopen($script, "w") or die("Unable to open file!");
-$myfilexml = fopen($xml_file, "w") or die("Unable to open file!");
+$code_file = fopen($code_url, "w") or die("Unable to open file!");
+$xml_file = fopen($xml_url, "w") or die("Unable to open file!");
 
-fwrite_stream($myfile, $code);
-fwrite_stream($myfilexml, $xml);
+fwrite($code_file, $code);
+fwrite($xml_file, $xml);
 
-fclose($myfile);
-fclose($myfilexml);
-
-
+fclose($code_file);
+fclose($xml_file);
 ?>
